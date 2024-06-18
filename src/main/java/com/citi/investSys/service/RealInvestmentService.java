@@ -1,5 +1,6 @@
 package com.citi.investSys.service;
 
+import com.citi.investSys.exception.InvestmentNotFoundException;
 import com.citi.investSys.model.Investment;
 import com.citi.investSys.repository.InvestSysRepository;
 import org.springframework.stereotype.Service;
@@ -17,15 +18,19 @@ public class RealInvestmentService implements InvestmentService{
 
     @Override
     public String addInvestment(Investment investment) {
-//        System.out.println(investment.getInvestment_id());
         investSysRepository.save(investment);
         return "Investment Saved";
     }
 
     @Override
     public String removeInvestment(String investmentID) {
-        investSysRepository.deleteById(investmentID);
-        return "Investment Removed";
+        if(investSysRepository.existsById(investmentID)){
+            investSysRepository.deleteById(investmentID);
+            return "Investment Removed";
+        }
+        else{
+            throw new InvestmentNotFoundException("Requested Investment does not exist");
+        }
     }
 
     @Override
@@ -36,12 +41,22 @@ public class RealInvestmentService implements InvestmentService{
 
     @Override
     public Investment getInvestment(String investmentID) {
-        return investSysRepository.findById(investmentID).get();
+        if(investSysRepository.findById(investmentID).isEmpty()){
+            throw new InvestmentNotFoundException("Requested Investment does not exist");
+        }
+        else{
+            return investSysRepository.findById(investmentID).get();
+        }
     }
 
     @Override
     public List<Investment> getAllInvestmentsOfCustomers(String customerID) {
-        return investSysRepository.findByCustomerID(customerID);
+        if(investSysRepository.findByCustomerID(customerID).isEmpty()){
+            throw new InvestmentNotFoundException("The Customer does not have any Investments");
+        }
+        else{
+            return investSysRepository.findByCustomerID(customerID);
+        }
     }
 
     @Override
