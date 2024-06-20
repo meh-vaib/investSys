@@ -1,8 +1,6 @@
 package com.citi.investSys.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name="invest_sys_info")
@@ -14,6 +12,17 @@ public class Investment {
     private String dateOfInvestment;
     private String customerID;
 
+    @ManyToOne
+    private Customer customerDetails;
+
+    public Customer getCustomerDetails() {
+        return customerDetails;
+    }
+
+    public void setCustomerDetails(Customer customerDetails) {
+        this.customerDetails = customerDetails;
+    }
+
     public String getCustomerID() {
         return customerID;
     }
@@ -21,7 +30,6 @@ public class Investment {
     public void setCustomerID(String customerID) {
         this.customerID = customerID;
     }
-
 
     public String getInvestmentID() {
         return investmentID;

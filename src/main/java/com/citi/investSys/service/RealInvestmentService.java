@@ -1,8 +1,10 @@
 package com.citi.investSys.service;
 
 import com.citi.investSys.exception.InvestmentNotFoundException;
+import com.citi.investSys.model.Customer;
 import com.citi.investSys.model.Investment;
 import com.citi.investSys.repository.InvestSysRepository;
+import com.citi.investSys.repository.CustomerSysRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,15 +13,25 @@ import java.util.List;
 public class RealInvestmentService implements InvestmentService{
 
     InvestSysRepository investSysRepository;
+    RealCustomerService realCustomerService;
 
-    public RealInvestmentService(InvestSysRepository investSysRepository) {
+    public RealInvestmentService(InvestSysRepository investSysRepository, RealCustomerService realCustomerService) {
         this.investSysRepository = investSysRepository;
+        this.realCustomerService = realCustomerService;
     }
 
     @Override
     public String addInvestment(Investment investment) {
+//        System.out.println("Check");
+        Customer customer= realCustomerService.getCustomer(investment.getCustomerID());
+        if(customer==null){
+            throw new InvestmentNotFoundException("Requested Customer does not exist");
+        }
+        else{
+            investment.setCustomerDetails(customer);
         investSysRepository.save(investment);
         return "Investment Saved";
+        }
     }
 
     @Override

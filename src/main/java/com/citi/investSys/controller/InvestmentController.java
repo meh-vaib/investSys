@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/investsys")
+@RequestMapping("/investsys/investment")
 public class InvestmentController {
 
     RealInvestmentService realInvestmentService;
@@ -53,7 +53,7 @@ public class InvestmentController {
     @PostMapping
     @Operation(summary="Add Investment", description = "Adds an Investment to the DB")
     public String createInvestment(@RequestBody Investment investment){
-        System.out.println(investment.getInvestmentID());
+//        System.out.println(investment.getInvestmentID());
         realInvestmentService.addInvestment(investment);
         return "Investment Added";
     }

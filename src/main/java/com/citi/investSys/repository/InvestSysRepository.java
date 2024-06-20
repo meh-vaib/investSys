@@ -8,3 +8,5 @@ import java.util.List;
 public interface InvestSysRepository extends JpaRepository<Investment, String> {
     List<Investment> findByCustomerID(String customerID);
 }
+
+
