@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import investmentService from '../services/investmentService';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Investments = () => {
     const [investments, setInvestments] = useState([]);
@@ -104,158 +105,240 @@ const Investments = () => {
         }));
     };
 
-    return (
-        <div>
-            <h2>Investments</h2>
-            
-            {/* Display all investments as cards */}
-            <div>
-                <h3>All Investments</h3>
-                {investments.map(investment => (
-                    <div key={investment.investmentID} style={{ border: '1px solid #ccc', padding: '10px', margin: '10px', width: '300px' }}>
-                        <p>ID: {investment.investmentID}</p>
-                        <p>Type: {investment.typeOfInvestment}</p>
-                        <p>Date: {investment.dateOfInvestment}</p>
-                        <p>Customer ID: {investment.customerID}</p>
-                        <p>Customer Name: {investment.customerDetails.name}</p>
-                        <p>Customer Account Number: {investment.customerDetails.accNumber}</p>
-                        <button onClick={() => deleteInvestment(investment.investmentID)}>Delete</button>
-                    </div>
-                ))}
+  return (
+    <div  style={{ backgroundColor: '#2E4053' }}>
+    <div className="container">
+      <h1 className="text-center text-white">Investments</h1>
+        <br/>
+      {/* Display all investments as cards */}
+      <div className="row text-white justify-content-center">
+        <h3 className="text-center col-12">All Investments</h3>
+        {investments.map(investment => (
+          <div key={investment.investmentID} className="col-md-4 mb-4">
+            <div className="card" style={{backgroundColor:'#E5E5EA'}}>
+              <div className="card-body">
+                <p>ID: {investment.investmentID}</p>
+                <p>Type: {investment.typeOfInvestment}</p>
+                <p>Date: {investment.dateOfInvestment}</p>
+                <p>Customer ID: {investment.customerID}</p>
+                <p>Customer Name: {investment.customerDetails.name}</p>
+                <p>Customer Account Number: {investment.customerDetails.accNumber}</p>
+                <button className="m-2 btn btn-danger" onClick={() => deleteInvestment(investment.investmentID)}>Delete</button>
+              </div>
             </div>
+          </div>
+        ))}
+      </div>
+        <br/>
 
-            {/* Display one investment based on investmentID */}
-            <div>
-                <h3>Get Investment by ID</h3>
-                <input
-                    type="text"
-                    placeholder="Enter Investment ID"
-                    value={investmentId}
-                    onChange={(e) => setInvestmentId(e.target.value)}
-                />
-                <button onClick={getInvestment}>Get Investment</button>
-                {console.log(investment)}
-                {investment && (
-                    <div key={investment.data.investmentID} style={{ border: '1px solid #ccc', padding: '10px', margin: '10px', width: '300px' }}>
-                        <p>Type: {investment.data.typeOfInvestment}</p>
-                        <p>Date: {investment.data.dateOfInvestment}</p>
-                        <p>Customer ID: {investment.data.customerID}</p>
-                        <p>Customer Name: {investment.data.customerDetails.name}</p>
-                        <p>Customer Account Number: {investment.data.customerDetails.accNumber}</p>
-                    </div>
-                )}
-            </div>
-
-            {/* Add an investment */}
-            <div>
-                <h3>Add Investment</h3>
-                <input
-                    type="text"
-                    placeholder="Investment ID"
-                    name="investmentID"
-                    value={newInvestmentData.investmentID}
-                    onChange={handleNewInvestmentChange}
-                />
-                <input
-                    type="text"
-                    placeholder="Type"
-                    name="typeOfInvestment"
-                    value={newInvestmentData.typeOfInvestment}
-                    onChange={handleNewInvestmentChange}
-                />
-                <input
-                    type="text"
-                    placeholder="Date (YYYY-MM-DD)"
-                    name="dateOfInvestment"
-                    value={newInvestmentData.dateOfInvestment}
-                    onChange={handleNewInvestmentChange}
-                />
-                <input
-                    type="text"
-                    placeholder="Customer ID"
-                    name="customerID"
-                    value={newInvestmentData.customerID}
-                    onChange={handleNewInvestmentChange}
-                />
-                <input
-                    type="number"
-                    placeholder="Amount"
-                    name="amount"
-                    value={newInvestmentData.amount}
-                    onChange={handleNewInvestmentChange}
-                />
-                <button onClick={addInvestment}>Add Investment</button>
-            </div>
-
-            {/* Edit an existing investment */}
-            <div>
-                <h3>Edit Investment</h3>
-                <input
-                    type="text"
-                    placeholder="Investment ID"
-                    name="investmentID"
-                    value={editInvestmentData.investmentID}
-                    onChange={handleEditInvestmentChange}
-                />
-                <input
-                    type="text"
-                    placeholder="Type"
-                    name="typeOfInvestment"
-                    value={editInvestmentData.typeOfInvestment}
-                    onChange={handleEditInvestmentChange}
-                />
-                <input
-                    type="text"
-                    placeholder="Date (YYYY-MM-DD)"
-                    name="dateOfInvestment"
-                    value={editInvestmentData.dateOfInvestment}
-                    onChange={handleEditInvestmentChange}
-                />
-                <input
-                    type="text"
-                    placeholder="Customer ID"
-                    name="customerID"
-                    value={editInvestmentData.customerID}
-                    onChange={handleEditInvestmentChange}
-                />
-                <input
-                    type="number"
-                    placeholder="Amount"
-                    name="amount"
-                    value={newInvestmentData.amount}
-                    onChange={handleNewInvestmentChange}
-                />
-                <button onClick={editInvestment}>Edit Investment</button>
-            </div>
-
-            {/* Display investments of a single customer */}
-            <div>
-                <h3>Get Investments by Customer ID</h3>
-                <input
-                    type="text"
-                    placeholder="Enter Customer ID"
-                    value={customerId}
-                    onChange={(e) => setCustomerId(e.target.value)}
-                />
-                <button onClick={getInvestmentsOfCustomer}>Get Investments</button>
-                {investmentsOfCustomer.length > 0 && (
-                    <div>
-                        <h4>Investments of Customer {customerId}</h4>
-                        {investmentsOfCustomer.map(investment => (
-                            <div key={investment.investmentID} style={{ border: '1px solid #ccc', padding: '10px', margin: '10px', width: '300px' }}>
-                            <p>ID: {investment.investmentID}</p>
-                            <p>Type: {investment.typeOfInvestment}</p>
-                            <p>Date: {investment.dateOfInvestment}</p>
-                            <p>Customer Name: {investment.customerDetails.name}</p>
-                            <p>Customer Account Number: {investment.customerDetails.accNumber}</p>
-                            <button onClick={() => deleteInvestment(investment.investmentID)}>Delete</button>
-                        </div>
-                        ))}
-                    </div>
-                )}
-            </div>
+      {/* Display one investment based on investmentID */}
+      <div className=" justify-content-center row text-white">
+        <h3 className="col-12 text-center">Get Investment by ID</h3>
+        <div className="col-md-4">
+          <input
+            type="text"
+            placeholder="Enter Investment ID"
+            value={investmentId}
+            onChange={(e) => setInvestmentId(e.target.value)}
+            className="form-control"
+            style={{backgroundColor:'#E5E5EA'}}
+          />
+          <button className="m-2 btn btn-primary" onClick={getInvestment}>Get Investment</button>
         </div>
-    );
+        {investment && (
+          <div className="col-md-4">
+            <div className="card" style={{backgroundColor:'#E5E5EA'}}>
+              <div className="card-body" >
+                <p>Type: {investment.data.typeOfInvestment}</p>
+                <p>Date: {investment.data.dateOfInvestment}</p>
+                <p>Customer ID: {investment.data.customerID}</p>
+                <p>Customer Name: {investment.data.customerDetails.name}</p>
+                <p>Customer Account Number: {investment.data.customerDetails.accNumber}</p>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+      <br/>
+
+      {/* Add an investment */}
+      <div className="justify-content-center row text-white">
+        <h3 className="text-center col-12">Add Investment</h3>
+        <div className="col-md-4">
+          <form >
+            <div className="form-group">
+              <label>Investment ID</label>
+              <input
+                type="text"
+                placeholder="Investment ID"
+                name="investmentID"
+                value={newInvestmentData.investmentID}
+                onChange={handleNewInvestmentChange}
+                className="form-control border-0"
+                style={{backgroundColor:'#E5E5EA'}}
+              />
+            </div>
+            <div className="form-group">
+              <label>Type</label>
+              <input
+                type="text"
+                placeholder="Type"
+                name="typeOfInvestment"
+                value={newInvestmentData.typeOfInvestment}
+                onChange={handleNewInvestmentChange}
+                className="form-control"
+                style={{backgroundColor:'#E5E5EA'}}
+              />
+            </div>
+            <div className="form-group">
+              <label>Date (YYYY-MM-DD)</label>
+              <input
+                type="text"
+                placeholder="Date (YYYY-MM-DD)"
+                name="dateOfInvestment"
+                value={newInvestmentData.dateOfInvestment}
+                onChange={handleNewInvestmentChange}
+                className="form-control"
+                style={{backgroundColor:'#E5E5EA'}}
+              />
+            </div>
+            <div className="form-group">
+              <label>Customer ID</label>
+              <input
+                type="text"
+                placeholder="Customer ID"
+                name="customerID"
+                value={newInvestmentData.customerID}
+                onChange={handleNewInvestmentChange}
+                className="form-control"
+                style={{backgroundColor:'#E5E5EA'}}
+              />
+            </div>
+            <div className="form-group">
+              <label>Amount</label>
+              <input
+                type="number"
+                placeholder="Amount"
+                name="amount"
+                value={newInvestmentData.amount}
+                onChange={handleNewInvestmentChange}
+                className="form-control"
+                style={{backgroundColor:'#E5E5EA'}}
+              />
+            </div>
+            <button className="text-center m-2 btn btn-primary" onClick={addInvestment}>Add Investment</button>
+          </form>
+        </div>
+      </div>
+      <br/>
+
+      {/* Edit an existing investment */}
+      <div className="justify-content-center text-white row">
+        <h3 className="col-12 text-center">Edit Investment</h3>
+        <div className="col-md-4">
+          <form>
+
+              <div className="form-group">
+              <label>Investment ID</label>
+              <input
+                type="text"
+                placeholder="Investment ID"
+                name="investmentID"
+                value={editInvestmentData.investmentID}
+                onChange={handleEditInvestmentChange}
+                className="form-control"
+                style={{backgroundColor:'#E5E5EA'}}
+              />
+            </div>
+            <div className="form-group">
+              <label>Type</label>
+              <input
+                type="text"
+                placeholder="Type"
+                name="typeOfInvestment"
+                value={editInvestmentData.typeOfInvestment}
+                onChange={handleEditInvestmentChange}
+                className="form-control"
+                style={{backgroundColor:'#E5E5EA'}}
+              />
+            </div>
+            <div className="form-group">
+              <label>Date (YYYY-MM-DD)</label>
+              <input
+                type="text"
+                placeholder="Date (YYYY-MM-DD)"
+                name="dateOfInvestment"
+                value={editInvestmentData.dateOfInvestment}
+                onChange={handleEditInvestmentChange}
+                className="form-control"
+                style={{backgroundColor:'#E5E5EA'}}
+              />
+            </div>
+            <div className="form-group">
+              <label>Customer ID</label>
+              <input
+                type="text"
+                placeholder="Customer ID"
+                name="customerID"
+                value={editInvestmentData.customerID}
+                onChange={handleEditInvestmentChange}
+                className="form-control"
+                style={{backgroundColor:'#E5E5EA'}}
+              />
+            </div>
+            <div className="form-group">
+              <label>Amount</label>
+              <input
+                type="number"
+                placeholder="Amount"
+                name="amount"
+                value={editInvestmentData.amount}
+                onChange={handleEditInvestmentChange}
+                className="form-control"
+                style={{backgroundColor:'#E5E5EA'}}
+              />
+            </div>
+            <button className="m-2 btn btn-primary" onClick={editInvestment}>Edit Investment</button>
+          </form>
+        </div>
+      </div>
+      <br/>
+
+      {/* Display investments of a single customer */}
+      <div className="justify-content-center text-white row">
+        <h3 className="col-12 text-center">Get Investments by Customer ID</h3>
+        <div className="col-md-4">
+          <input
+            type="text"
+            placeholder="Enter Customer ID"
+            value={customerId}
+            onChange={(e) => setCustomerId(e.target.value)}
+            className="form-control"
+            style={{backgroundColor:'#E5E5EA'}}
+          />
+          <button className="m-2 btn btn-primary" onClick={getInvestmentsOfCustomer}>Get Investments</button>
+        </div>
+        {investmentsOfCustomer.length > 0 && (
+          <div className="col-md-8">
+            {/* <h4>Investments of Customer {customerId}</h4> */}
+            {investmentsOfCustomer.map(investment => (
+              <div key={investment.investmentID} className="card mb-4">
+                <div className="card-body" style={{backgroundColor:'#E5E5EA'}}>
+                  <p>ID: {investment.investmentID}</p>
+                  <p>Type: {investment.typeOfInvestment}</p>
+                  <p>Date: {investment.dateOfInvestment}</p>
+                  <p>Customer Name: {investment.customerDetails.name}</p>
+                  <p>Customer Account Number: {investment.customerDetails.accNumber}</p>
+                  <button className="m-2 btn btn-danger" onClick={() => deleteInvestment(investment.investmentID)}>Delete</button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+    </div>
+  );
 };
 
 export default Investments;
